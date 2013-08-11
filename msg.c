@@ -347,16 +347,16 @@ static int hash_greater_target(const unsigned char *hash, const unsigned char *t
 }
 
 // yacoin: increasing Nfactor gradually
-const unsigned char minNfactor = 4;
+const unsigned char minNfactor = 12;
 const unsigned char maxNfactor = 30;
 
 unsigned char GetNfactor(unsigned int nTimestamp) {
     int l = 0;
 
-    if (nTimestamp <= 1367991200)
-        return 4;
+    if (nTimestamp <= 1375817223)
+        return minNfactor;
 
-    unsigned long int s = nTimestamp - 1367991200;
+    unsigned long int s = nTimestamp - 1375817223;
     while ((s >> 1) > 3) {
       l += 1;
       s >>= 1;
@@ -411,7 +411,7 @@ static int check_hash(const char *remote_host, const char *auth_user,
 	SHA256(hash1, SHA256_DIGEST_LENGTH, hash);
 #else
 	//scrypt_1024_1_1_256(data, hash);
-	nfactor=GetNfactor(data[17]);
+	nfactor=GetNfactor(data32[17]);
     scrypt((unsigned char *)data, 80,
            (unsigned char *)data, 80,
             nfactor, 0, 0, (unsigned char *)hash, 32);
